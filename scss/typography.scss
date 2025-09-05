@@ -8,7 +8,7 @@
 //@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
 /* From Hamilton.edu */
 @import url('https://fonts.googleapis.com/css2?family=Biryani:wght@200;300;400;600;700;800;900&family=Jomolhari&display=swap');
-$font-family-sans-serif:  "Biryani", sans-serif;
+$font-family-sans-serif:  "Source Sans Pro", sans-serif;
 $font-family-monospace:  SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 $font-family-serif: "Jomolhari", serif;
 $font-family-base: $font-family-sans-serif;
@@ -46,8 +46,8 @@ $nav-link-font-weight: $font-weight-light;
   font-size: $navbar-brand-font-size;
 }
 #navbar-main {
-  h1,h2,h3,h4,h5 {
-    font-family: $font-family-sans-serif;
+  h2,h3,h4,h5 {
+    font-family: "Crimson Text", serif;
   }
 }
 dt {

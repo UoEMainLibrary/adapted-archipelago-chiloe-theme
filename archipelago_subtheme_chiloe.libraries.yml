@@ -1,15 +1,39 @@
 global-styling:
   version: VERSION
   js:
-    js/popper.min.js: {  weight: -49}
+    js/popper.min.js: { weight: -49 }
     js/bootstrap.min.js: { weight: -48 }
-    js/barrio.js: {}
-    js/custom.js: {}
+    js/barrio.js: { }
+    js/custom.js: { }
   css:
     component:
-      css/style.css: {}
-      https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css: {type: external, minified: false }
+      css/style.css: { }
+      css/wpp_theme-platform-styles.css: { }
+      css/wpp-theme-menu-styles.css: { }
+      https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css: { type: external, minified: false }
   dependencies:
     - core/jquery
     - core/drupal
     - core/popperjs
+
+#edgel-theme:
+#  css:
+#    base:
+#      libraries/uoe--edgel/dist/css/edgel-purple.min.css: {}
+#      libraries/uoe--edgel/dist/css/edgel-grey-dark.min.css: {}
+#  js:
+#    libraries/uoe--edgel/custom-elements/images/footer-affiliations.js: {}
+
+edgel-purple:
+  css:
+    base:
+      /libraries/uoe--edgel/dist/css/edgel-purple.min.css: { }
+
+edgel-grey-dark:
+  css:
+    base:
+      /libraries/uoe--edgel/dist/css/edgel-grey-dark.min.css: { }
+
+edgel-components:
+  js:
+    /libraries/uoe--edgel/custom-elements/images/footer-affiliations.js: { type: file }

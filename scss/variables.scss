@@ -1,10 +1,10 @@
 /* VARIABLES */
 @use 'sass:color';
 // colors
-$primary-shade: rgb(254, 32, 118);
+$primary-shade: rgb(131, 0, 101);
 $primary-light: lighten($primary-shade, 35%);
 $primary-dark: darken($primary-shade, 10%);
-$accent-shade: rgb(97, 211, 157);
+$accent-shade: rgb(97, 120, 211);
 $accent-light: desaturate(lighten($accent-shade, 15%), 60);
 $accent-light-rgb: red($accent-light), green($accent-light), blue($accent-light);
 $accent-dark: darken($accent-shade, 10%);

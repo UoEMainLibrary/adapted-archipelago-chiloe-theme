@@ -130,17 +130,17 @@
         <nav{{ navbar_attributes }}>
           <div class="container-fluid gx-0 flex-wrap">
             <div class="{{ container }} not-to-be-collapsed d-flex">
-              <div class="row w-100 g-0">
+              <div class="row justify-content-center w-100 g-0">
                   {%  set header_class_col = 'col-lg-auto' %}
                   {%  if header_right_exists %}
                       {#  ensure that if we have something to the right, we add min col-lg-8 #}
-                      {%  set header_class_col = 'col-lg-8' %}
+                      {%  set header_class_col = 'col-lg-5' %}
                   {%  endif %}
-                <div class="align-content-left align-items-center col-md-12 {{ header_class_col }} col-sm-12 my-4 flex-wrap page-header">
+                <div class="text-white align-content-left align-items-center col-md-12 {{ header_class_col }} col-sm-12 mt-4 mb-0 mb-lg-4 flex-wrap page-header">
                   {{ page.header }}
                 </div>
                   {%  if header_right_exists %}
-                  <div class="align-content-left align-items-center col-lg-4 col-md-12 col-sm-12 my-4 flex-wrap page-header-right">
+                  <div class="text-white align-content-left align-items-center col-lg-7 col-md-12 col-sm-12 my-4 flex-wrap page-header-right">
                       {{ page.header_right }}
                   </div>
                   {%  endif %}
@@ -313,7 +313,7 @@
       </div>
     {% endif %}
     {% block footer %}
-      {% include directory ~ '/templates/includes/footer.html.twig' %}
+      {% include '@archipelago_subtheme_chiloe/templates/includes/footer.html.twig' %}
     {% endblock %}
   </div>
 </div>

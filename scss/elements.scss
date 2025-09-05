@@ -7,6 +7,7 @@ input[type=number],
 input[type=date],
 select,
 textarea {
+  border-radius: 0;
   display: block;
   width: 100%;
   border: 1px solid #{$gray-200};
@@ -14,10 +15,11 @@ textarea {
   transition: border .5s, background-color 0.5s, color .5s;
 }
 input[type=button], input[type=submit] {
+  border-radius: 0;
   line-height: 1.5rem;
   width:auto;
   &.form-submit {
-    margin-left:0.5rem;
+    margin-left:0.9rem;
   }
   &.form-autocomplete {
     background-position: 98% center;
@@ -27,6 +29,7 @@ input[type=button], input[type=submit] {
 .form-type-select {
   // For the dropdown-toggle we don't use the before
   .dropdown > .btn.dropdown-toggle {
+    border-radius: 0;
     line-height: 1.5rem;
     padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
     height: 100%;
@@ -40,6 +43,7 @@ input[type=button], input[type=submit] {
   }
 
   select  {
+    border-radius: 0;
     padding: 0.55rem 0.75rem;
     height: 100%;
     text-transform: uppercase;
@@ -63,10 +67,12 @@ input[type=button], input[type=submit] {
 }
 
 .form-row > div.form-actions {
+  border-radius: 0;
   padding-right: 0;
 }
 
 .form-checkbox.form-check-input:checked {
+  border-radius: 0;
   background-color: var(--bs-secondary, #{$accent-shade});
   border-color: var(--bs-secondary, #{$accent-shade});
 }

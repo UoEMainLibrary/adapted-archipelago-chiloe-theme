@@ -5,10 +5,13 @@ description: 'Archipelago Sub Theme based on Bootstrap 5/SCSS.'
 core: 10.x
 core_version_requirement: ^10
 base theme: bootstrap_barrio
-logo: 'logo.png'
+logo: 'uoe_logo.png'
 
 libraries:
   - archipelago_subtheme_chiloe/global-styling
+  - archipelago_subtheme_chiloe/edgel-purple
+  - archipelago_subtheme_chiloe/edgel-grey-dark
+  - archipelago_subtheme_chiloe/edgel-components
 libraries-override:
   bootstrap_barrio/global-styling: false
   bootstrap_barrio/affix:

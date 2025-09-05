@@ -4,7 +4,7 @@
       <div class="site-footer__top clearfix">
       {% if page.footer_first or page.footer_second or page.footer_third or page.footer_fourth %}
           {{ page.footer_first }}
-          {{ page.footer_second }}
+          {% include '@archipelago_subtheme_chiloe/templates/includes/custom-footer.html.twig' %}
           {{ page.footer_third }}
           {{ page.footer_fourth }}
       {% endif %}

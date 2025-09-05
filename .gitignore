@@ -61,3 +61,6 @@ images/.DS_Store
 .idea/php.xml
 .idea/vcs.xml
 .DS_Store
+node_modules/
+css/*.css
+*.map
