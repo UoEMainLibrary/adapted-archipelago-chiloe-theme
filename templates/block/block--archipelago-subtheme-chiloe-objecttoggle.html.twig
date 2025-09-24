@@ -1,0 +1,11 @@
+{# block--archipelago-subtheme-chiloe-objecttoggle.html.twig #}
+
+{% set target_id = 'block-archipelago-subtheme-chiloe-views-block-creative-work-series-children-block-1-2' %}
+
+{% if page.content_bottom[target_id] is defined or page.content[target_id] is defined %}
+  <div class="object-toggle">
+    <a class="btn btn-primary" href="#{{ target_id }}">
+      Jump to Series
+    </a>
+  </div>
+{% endif %}

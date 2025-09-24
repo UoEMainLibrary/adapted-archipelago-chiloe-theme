@@ -1,4 +1,9 @@
-<footer>  {{ drupal_block('site_footer', {context_mapping: {group:  '@group.group_route_context:group'}}, wrapper=false) }}
+<footer> {# {{ drupal_block('site_footer', {context_mapping: {group:  '@group.group_route_context:group'}}, wrapper=false) }}#}
+  <div class="site-footer-top container-footer">
+    <img src="/{{ directory }}/images/library-branding-baton.png" alt="Library branding"/>
+    <a href="mailto:heritagecollections@ed.ac.uk" class="btn btn-primary btn-sm">Contact us
+      <i class="bi bi-chevron-right"></i></a>
+  </div>
   <div class="footer-discover"><h3 class="footer-discover-heading"> The University of Edinburgh </h3></div>
   <div class="footer">
     <div class="container-footer">
@@ -23,14 +28,16 @@
           </ul>
         </div>
         <div class="col-md-4 col-6 justify-content-end"><a
-            href="../../../../../libraries/uoe--edgel/custom-elements/images/footer-affiliations.js" > <img class="img-fluid"
-                                                                                    alt="University affiliations"
-                                                                                    src="/{{ directory }}/images/footer-affiliations.png">
+            href="../../../../../libraries/uoe--edgel/custom-elements/images/footer-affiliations.js"> <img
+              class="img-fluid"
+              alt="University affiliations"
+              src="/{{ directory }}/images/footer-affiliations.png">
           </a></div>
       </div>
       <div class="row">
-        <div class="col-md-4 order-md-2"><p class="float-end"><a class="btn btn-brand btn-sm"
-                                                                 href="https://library.ed.ac.uk/library-help"> Contact us <i
+        <div class="col-md-4 order-md-2"><p class="float-end"><a class="btn btn-primary btn-sm"
+                                                                 href="https://library.ed.ac.uk"> Library
+              page <i
                 class="bi bi-chevron-right"></i> </a></p></div>
         <div class="col-md-8 order-md-1"><p> The University of Edinburgh is a charitable body, registered in Scotland,
             with registration number SC005336, VAT Registration Number GB&nbsp;592&nbsp;9507&nbsp;00, and is
