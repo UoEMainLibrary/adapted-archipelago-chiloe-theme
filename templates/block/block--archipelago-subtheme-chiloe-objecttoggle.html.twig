@@ -1,11 +1,15 @@
 {# block--archipelago-subtheme-chiloe-objecttoggle.html.twig #}
 
 {% set target_id = 'block-archipelago-subtheme-chiloe-views-block-creative-work-series-children-block-1-2' %}
-
-{% if page.content_bottom[target_id] is defined or page.content[target_id] is defined %}
-  <div class="object-toggle">
-    <a class="btn btn-primary" href="#{{ target_id }}">
-      Jump to Series
-    </a>
-  </div>
-{% endif %}
+<div class="object-toggle mb-3" id="toggle-{{ target_id }}">
+  <a class="btn btn-secondary" href="#{{ target_id }}">
+    Jump to Images
+  </a>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (!document.getElementById("{{ target_id }}")) {
+        document.getElementById("toggle-{{ target_id }}").style.display = "none";
+      }
+    });
+  </script>
+</div>

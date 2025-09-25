@@ -100,7 +100,6 @@ $carousel-indicator-transition: opacity 0.5s, margin-right 0.5s;
     --bs-secondary-rgb: #{$brand-primary};
     --bs-link-color: var(--bs-link-color, #{$link-color});
     --bs-btn-bg: var(--bs-primary, #{$primary-shade});
-    --bs-btn-border-radius: 0.25rem;
 
     .nav-pills {
       --bs-nav-pills-link-active-color: var(--bs-quaternary, #{$quaternary-shade});
