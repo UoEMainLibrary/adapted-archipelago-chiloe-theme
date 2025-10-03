@@ -898,7 +898,7 @@ pre {
     /* Margin bottom to any Node rendered entity */
     div.content div[data-history-node-id] {
       div.field {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
       }
     }
 
@@ -1676,7 +1676,6 @@ pre {
           transition: clip-path 0.5s;
           padding: 0 !important;
           pointer-events: none;
-
           h3 {
             margin-bottom: 0 !important;
           }
@@ -2130,20 +2129,29 @@ a.highlighted_pumpkin {
   border-top: 1px solid #dee2e6;
 }
 
-
 #customTabs {
   .nav-item {
-    background-color: pink;
+    background-color: #a9a9cc;
 
     .nav-link {
-      font-weight: 600;
+      font-weight: 500;
       font-size: 2rem;
     }
   }
+}
 
+.page-link {
+  border-radius: 0 !important;
+}
+
+.image-iiif {
+  border-radius: 0 !important;
 }
 
 .field--name-node-changed-date {
+  display: none;
+}
+.mirador-workspace-control-panel {
   display: none;
 }
 
