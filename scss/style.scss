@@ -1683,6 +1683,7 @@ pre {
           padding: 0 !important;
           margin-bottom: 0 !important;
           pointer-events: none;
+
           h3 {
             margin-bottom: 0 !important;
           }
@@ -2160,7 +2161,11 @@ a.highlighted_pumpkin {
   }
 }
 
-
+.carousel-caption {
+  h3 {
+    margin-bottom: 0 !important;
+  }
+}
 
 
 
