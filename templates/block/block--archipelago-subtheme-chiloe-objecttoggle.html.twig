@@ -1,4 +1,27 @@
 
+<button id="scroll-to-tab-2 pb-2" class="btn btn-primary" style="display:none;">
+  Jump to images
+</button>
+
+<script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      var target = document.getElementById('tab-2');
+      var button = document.getElementById('scroll-to-tab-2');
+
+      if (target && button) {
+        button.style.display = 'inline-block';
+
+        button.addEventListener('click', function() {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+    });
+  })();
+</script>
+
+
+
 {#<ul class="nav nav-tabs mb-3" id="my-tab-buttons" style="display:none;">#}
 {#  <li class="nav-item">#}
 {#    <button class="nav-link active tab-btn" data-target="tab-1" type="button" style="display:none;">Collection overview</button>#}

@@ -15,9 +15,9 @@
 {% set attributes = attributes.addClass('site-branding') %}
 <div class="d-flex flex-wrap align-content-center align-items-center position-relative flex-column">
   {% if site_logo or site_name %}
-    <a href="{{ path('<front>') }}" title="{{ site_name }}" rel="home" class="navbar-brand d-flex flex-column stretched-link">
+    <a href="https://www.ed.ac.uk/" title="University of Edinburgh website" rel="home" class="navbar-brand d-flex flex-column stretched-link">
       {% if site_logo %}
-        <img src="{{ site_logo }}" alt="{{ 'Home'|t }}" class="img-fluid d-flex align-top" />
+        <img src="{{ site_logo }}" alt="University of Edinburgh logo" class="img-fluid d-flex align-top" />
       {% endif %}
       {% if site_name %}
         <span class="ml-2 mt-2 d-md-flex align-self-end justify-content-right">{{ site_name }}</span>
