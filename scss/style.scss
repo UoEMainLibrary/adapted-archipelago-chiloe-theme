@@ -1881,6 +1881,7 @@ pre {
 
         h1, h2, h3, h4, span, div {
           border-radius: var(--bs-border-radius-lg) !important;
+          margin-bottom: 0 !important;
         }
       }
     }
@@ -2131,21 +2132,21 @@ a.highlighted_pumpkin {
 
 /* some of my additions, adding styling for my collection tabbing
      */
-.custom-tab-pane {
-  display: none;
-  padding: 1rem 0;
-}
-
-#customTabs {
-  .nav-item {
-    background-color: #a9a9cc;
-
-    .nav-link {
-      font-weight: 500;
-      font-size: 2rem;
-    }
-  }
-}
+//.custom-tab-pane {
+//  display: none;
+//  padding: 1rem 0;
+//}
+//
+//#customTabs {
+//  .nav-item {
+//    background-color: #a9a9cc;
+//
+//    .nav-link {
+//      font-weight: 500;
+//      font-size: 2rem;
+//    }
+//  }
+//}
 
 .page-link {
   border-radius: 0 !important;
@@ -2160,12 +2161,5 @@ a.highlighted_pumpkin {
     padding-bottom: 1rem;
   }
 }
-
-.carousel-caption {
-  h3 {
-    margin-bottom: 0 !important;
-  }
-}
-
 
 
