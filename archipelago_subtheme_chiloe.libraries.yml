@@ -3,7 +3,6 @@ global-styling:
   js:
     js/popper.min.js: { weight: -49 }
     js/bootstrap.min.js: { weight: -48 }
-    js/tabs.js: { }
     js/barrio.js: { }
     js/custom.js: { }
   css:

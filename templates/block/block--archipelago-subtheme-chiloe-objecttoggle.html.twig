@@ -1,9 +1,135 @@
 
-<ul id="customTabs" class="nav nav-tabs mb-3" style="display:none;">
+<ul class="nav nav-tabs mb-3" id="my-tab-buttons" style="display:none;">
   <li class="nav-item">
-    <button class="nav-link active tab-btn" data-target="tab-1" type="button">Collection overview</button>
+    <button class="nav-link active tab-btn" data-target="tab-1" type="button" style="display:none;">Collection overview</button>
   </li>
   <li class="nav-item">
-    <button class="nav-link tab-btn" data-target="tab-2" type="button">Items in Collection</button>
+    <button class="nav-link tab-btn" data-target="tab-2" type="button" style="display:none;">Items in Collection</button>
   </li>
 </ul>
+{#<ul id="customTabs" class="nav nav-tabs mb-3" style="display:none;">#}
+{#  <li class="nav-item">#}
+{#    <button class="nav-link active tab-btn" data-target="tab-1" type="button">Collection overview</button>#}
+{#  </li>#}
+{#  <li class="nav-item">#}
+{#    <button class="nav-link tab-btn" data-target="tab-2" type="button">Items in Collection</button>#}
+{#  </li>#}
+{#</ul>#}
+<script>
+(function () {
+  function escId(id) {
+    if (typeof CSS !== 'undefined' && CSS.escape) return CSS.escape(id);
+    return id.replace(/([ !"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, '\\$1');
+  }
+
+  var buttonsContainer = document.getElementById('my-tab-buttons');
+  if (!buttonsContainer) return;
+
+  function getButtons() {
+    return Array.prototype.slice.call(buttonsContainer.querySelectorAll('.tab-btn'));
+  }
+
+  function getPanes() {
+    return Array.prototype.slice.call(document.querySelectorAll('.custom-tab-pane'));
+  }
+
+  function hideAllPanes() {
+    getPanes().forEach(function(p) {
+      p.style.display = 'none';
+    });
+  }
+
+  function showPaneById(id) {
+    var pane = document.getElementById(id);
+    if (!pane) return;
+    hideAllPanes();
+    pane.style.display = 'block';
+    if (typeof Drupal !== 'undefined' && typeof Drupal.attachBehaviors === 'function') {
+      var settings = (typeof drupalSettings !== 'undefined') ? drupalSettings : {};
+      Drupal.attachBehaviors(pane, settings);
+    }
+  }
+
+  function pruneButtons() {
+    var buttons = getButtons();
+    var anyVisible = false;
+
+    buttons.forEach(function(btn) {
+      var targetId = btn.dataset.target;
+      var li = btn.closest('li');
+      var target = document.getElementById(targetId);
+
+      if (!target) {
+        if (li) li.style.display = 'none';
+        btn.style.display = 'none';
+      } else {
+        if (li) li.style.display = '';
+        btn.style.display = '';
+        target.style.display = 'none'; // still hidden until activated
+        anyVisible = true;
+      }
+    });
+
+    if (!anyVisible) {
+      buttonsContainer.style.display = 'none';
+    } else {
+      buttonsContainer.style.display = '';
+    }
+  }
+
+  function ensureActiveButton() {
+    var buttons = getButtons().filter(function(b) {
+      var li = b.closest('li');
+      return (li ? li.style.display !== 'none' : b.style.display !== 'none');
+    });
+    if (buttons.length === 0) return;
+    var active = buttons.find(function(b) {
+      return b.classList.contains('active');
+    });
+    var chosen = active || buttons[0];
+    buttons.forEach(function(b) {
+      b.classList.remove('active');
+    });
+    chosen.classList.add('active');
+    showPaneById(chosen.dataset.target);
+  }
+
+  buttonsContainer.addEventListener('click', function (e) {
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    var targetId = btn.dataset.target;
+    if (!targetId) return;
+    getButtons().forEach(function(b) {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+    showPaneById(targetId);
+  });
+
+  function initOnce() {
+    pruneButtons();
+    ensureActiveButton();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initOnce);
+  } else {
+    initOnce();
+  }
+
+  var mo = new MutationObserver(function () {
+    if (window._myTabPruneTimeout) clearTimeout(window._myTabPruneTimeout);
+    window._myTabPruneTimeout = setTimeout(function () {
+      pruneButtons();
+      ensureActiveButton();
+    }, 100);
+  });
+  mo.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
+<style>
+.custom-tab-pane {
+  padding: 1rem 0;
+}
+</style>

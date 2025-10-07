@@ -2133,7 +2133,6 @@ a.highlighted_pumpkin {
 .custom-tab-pane {
   display: none;
   padding: 1rem 0;
-  border-top: 1px solid #dee2e6;
 }
 
 #customTabs {
@@ -2155,12 +2154,12 @@ a.highlighted_pumpkin {
   border-radius: 0 !important;
 }
 
-.field--name-node-changed-date {
-  display: none;
+.search-box {
+  .contextual-region {
+    padding-bottom: 1rem;
+  }
 }
-.mirador-workspace-control-panel {
-  display: none;
-}
+
 
 
 
