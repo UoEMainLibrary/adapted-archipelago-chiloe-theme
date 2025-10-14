@@ -1,18 +1,21 @@
 
 <div class="pb-3">
-  <button id="scroll-btn" class="btn btn-primary" style="display:block;">
+  <button id="scroll-btn" class="btn btn-primary" style="display:none;">
     Jump to images
   </button>
 </div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const btn = document.getElementById('scroll-btn');
-    btn.addEventListener('click', function () {
-      const target = document.getElementById('tab-1');
-      if (target) {
+    const target = document.getElementById('tab-1');
+    const button = document.getElementById('scroll-btn');
+
+    if (target && button) {
+      button.style.display = 'inline-block'; // or 'block' depending on layout
+      button.onclick = function () {
         target.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
+      };
+    }
   });
 </script>
 
