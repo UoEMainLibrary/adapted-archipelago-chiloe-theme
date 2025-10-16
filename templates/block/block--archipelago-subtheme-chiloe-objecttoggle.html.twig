@@ -7,11 +7,11 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const target = document.getElementById('tab-1');
+    const target = document.getElementById('tab-2');
     const button = document.getElementById('scroll-btn');
 
     if (target && button) {
-      button.style.display = 'inline-block'; // or 'block' depending on layout
+      button.style.display = 'block'; // or 'block' depending on layout
       button.onclick = function () {
         target.scrollIntoView({ behavior: 'smooth' });
       };
