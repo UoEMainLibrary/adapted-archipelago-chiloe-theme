@@ -17,3 +17,5 @@
 @import "barrio";
 // D10 Overrides
 @import "overrides";
+// Accessibility (WCAG 2.2 AA) — MUST stay last so it can override earlier rules
+@import "accessibility";

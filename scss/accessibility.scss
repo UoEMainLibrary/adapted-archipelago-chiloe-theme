@@ -1,0 +1,599 @@
+/* =============================================================================
+ * Accessibility overrides
+ * -----------------------------------------------------------------------------
+ * WCAG 2.2 AA remediation for issues declared on
+ * https://digital.collections.ed.ac.uk/accessibility and Lucy's checklist.
+ *
+ * Rules are grouped by success criterion so future changes stay easy to review.
+ * Keep this file as the LAST import in scss/import.scss so it can override
+ * bootstrap_barrio and vendor Bootstrap defaults.
+ * ========================================================================== */
+
+
+/* -----------------------------------------------------------------------------
+ * 2.4.7 Focus Visible / 2.4.11 Focus Not Obscured
+ * A warm, high-contrast focus ring that works on light and dark backgrounds
+ * and lifts links so image-only anchors are still discoverable.
+ * -------------------------------------------------------------------------- */
+
+/* Images inside anchors should be block-level so the focus ring surrounds them */
+a img {
+  display: block;
+}
+
+:focus-visible {
+  box-shadow:
+    rgba(255, 150, 0, 0.7) 0 0 10px 6px,
+    rgb(255, 150, 0) 0 0 0 2.5px;
+  z-index: 9999;
+  outline: none;
+}
+
+/* Smaller ring on inputs so it doesn't overwhelm the field */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  box-shadow:
+    rgba(255, 150, 0, 0.7) 0 0 5px 2px,
+    rgb(255, 150, 0) 0 0 0 1px !important;
+  z-index: 9999;
+  outline: none;
+}
+
+/* Slight lift on link focus so image-only links are noticeable */
+a:focus-visible {
+  transform: scale(1.05);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+}
+
+/* Prevent parent containers from clipping the ring */
+:has(a:focus-visible),
+:has(button:focus-visible),
+:has(input:focus-visible) {
+  overflow: visible !important;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 1.4.1 Use of Color / link underlines
+ * Links must be distinguishable without relying on colour.
+ * -------------------------------------------------------------------------- */
+
+a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition:
+    text-underline-offset 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    text-decoration-thickness 0.2s,
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s;
+}
+
+a:hover,
+a:focus-visible {
+  text-underline-offset: 1px;
+  text-decoration-thickness: 2px;
+}
+
+/* Nav / button / tab-style links opt out of underlining because they already
+   have a visual affordance. Screen-reader users still see the semantic <a>. */
+.nav-link,
+.navbar-brand,
+.btn,
+.btn-link,
+.pagination a,
+.carousel-control-prev,
+.carousel-control-next,
+.dropdown-item,
+.breadcrumb a,
+.skip-link {
+  text-decoration: none;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible,
+.breadcrumb a:hover,
+.breadcrumb a:focus-visible,
+.dropdown-item:hover,
+.dropdown-item:focus-visible {
+  text-decoration: underline;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 3.2.5 Change on Request
+ * Indicate links that open in a new tab with both an icon and SR-only text.
+ * -------------------------------------------------------------------------- */
+
+a[target="_blank"] {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15em;
+}
+
+a[target="_blank"]::after {
+  content: " (opens in a new tab)";
+
+  /* Visual: font-awesome-ish external-link icon, drawn as a currentColor mask */
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background: currentColor;
+  -webkit-mask:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'><path fill='%23000' d='M384 64C366.3 64 352 78.3 352 96C352 113.7 366.3 128 384 128L466.7 128L265.3 329.4C252.8 341.9 252.8 362.2 265.3 374.7C277.8 387.2 298.1 387.2 310.6 374.7L512 173.3L512 256C512 273.7 526.3 288 544 288C561.7 288 576 273.7 576 256L576 96C576 78.3 561.7 64 544 64L384 64zM144 160C99.8 160 64 195.8 64 240L64 496C64 540.2 99.8 576 144 576L400 576C444.2 576 480 540.2 480 496L480 416C480 398.3 465.7 384 448 384C430.3 384 416 398.3 416 416L416 496C416 504.8 408.8 512 400 512L144 512C135.2 512 128 504.8 128 496L128 240C128 231.2 135.2 224 144 224L224 224C241.7 224 256 209.7 256 192C256 174.3 241.7 160 224 160L144 160z'/></svg>")
+    no-repeat center;
+  mask:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'><path fill='%23000' d='M384 64C366.3 64 352 78.3 352 96C352 113.7 366.3 128 384 128L466.7 128L265.3 329.4C252.8 341.9 252.8 362.2 265.3 374.7C277.8 387.2 298.1 387.2 310.6 374.7L512 173.3L512 256C512 273.7 526.3 288 544 288C561.7 288 576 273.7 576 256L576 96C576 78.3 561.7 64 544 64L384 64zM144 160C99.8 160 64 195.8 64 240L64 496C64 540.2 99.8 576 144 576L400 576C444.2 576 480 540.2 480 496L480 416C480 398.3 465.7 384 448 384C430.3 384 416 398.3 416 416L416 496C416 504.8 408.8 512 400 512L144 512C135.2 512 128 504.8 128 496L128 240C128 231.2 135.2 224 144 224L224 224C241.7 224 256 209.7 256 192C256 174.3 241.7 160 224 160L144 160z'/></svg>")
+    no-repeat center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  vertical-align: middle;
+
+  /* Hide the phrase visually but keep it for AT users */
+  text-indent: -9999px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+a[target="_blank"]:hover::after,
+a[target="_blank"]:focus-visible::after {
+  transform: translate(1px, -2px);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Opt-out utility for anchors where the icon would be inappropriate
+   (e.g. inside icon-only buttons, image thumbnails, or the Contact-us button
+   in the site footer). Add class="no-new-tab-indicator" or data-no-newtab. */
+a[target="_blank"].no-new-tab-indicator::after,
+a[target="_blank"][data-no-newtab]::after,
+.no-new-tab-indicator a[target="_blank"]::after {
+  content: none;
+  display: none;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 2.4.1 Bypass Blocks — skip link visible on focus
+ * The <a class="skip-link"> already exists in html.html.twig. Drupal core's
+ * `visually-hidden focusable` classes hide it until focused, but the visible
+ * state needs enough contrast and prominence to be usable.
+ * -------------------------------------------------------------------------- */
+
+.skip-link,
+a.skip-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100000;
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  color: #00315f;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid #00315f;
+  border-radius: 0 0 4px 0;
+  transform: translateY(-110%);
+  transition: transform 0.15s ease-in-out;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid #ff9600;
+  outline-offset: 2px;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * Reusable .sr-only utility
+ * Bootstrap 5's .visually-hidden covers the "hidden always" case; this pattern
+ * from Lucy also handles focusable skip-links etc. Keep both in play.
+ * -------------------------------------------------------------------------- */
+
+.sr-only {
+  position: absolute !important;
+  clip-path: circle(0%);
+  border: 0;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+.sr-only:hover,
+.sr-only:active,
+.sr-only:focus {
+  z-index: 100000;
+  top: 5px;
+  left: 5px;
+  display: block;
+  width: auto;
+  height: auto;
+  text-decoration: none;
+  color: #00315f;
+  border-radius: 3px;
+  background-color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: normal;
+  clip-path: unset;
+  clip: unset;
+  padding: 8px;
+  text-wrap: nowrap;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 1.3.1 Info and Relationships — neutralise CKEditor-authored italics
+ * We can't rewrite 150k node bodies. This turns visual <i>/<em> into bold with
+ * curly quotes, which reads well and matches Lucy's snippet.
+ *
+ * Escape hatch: any element with .keep-italic (or inside .keep-italic) still
+ * renders italic. Add that class to Metadata Display templates where italic is
+ * genuinely required (e.g. taxonomic names).
+ * -------------------------------------------------------------------------- */
+
+i,
+em,
+cite {
+  font-style: normal;
+  font-weight: 700;
+}
+
+i::before,
+em::before,
+cite::before {
+  content: "\2018"; /* left single quote */
+}
+
+i::after,
+em::after,
+cite::after {
+  content: "\2019"; /* right single quote */
+}
+
+.keep-italic,
+.keep-italic i,
+.keep-italic em,
+.keep-italic cite {
+  font-style: italic;
+  font-weight: inherit;
+}
+
+.keep-italic i::before,
+.keep-italic i::after,
+.keep-italic em::before,
+.keep-italic em::after,
+.keep-italic cite::before,
+.keep-italic cite::after {
+  content: none;
+}
+
+/* Font Awesome and Bootstrap Icons deliberately use <i class="fa …"> / <i class="bi …"> */
+i[class*="fa-"],
+i[class*="fab-"],
+i[class*="fas-"],
+i[class*="far-"],
+i[class*="bi-"],
+i.fa,
+i.fab,
+i.fas,
+i.far,
+i.bi {
+  font-style: normal;
+  font-weight: inherit;
+}
+
+i[class*="fa-"]::before,
+i[class*="fa-"]::after,
+i[class*="fab-"]::before,
+i[class*="fab-"]::after,
+i[class*="fas-"]::before,
+i[class*="fas-"]::after,
+i[class*="far-"]::before,
+i[class*="far-"]::after,
+i[class*="bi-"]::before,
+i[class*="bi-"]::after,
+i.fa::after,
+i.fab::after,
+i.fas::after,
+i.far::after,
+i.bi::after {
+  content: none;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 1.4.8 Visual Presentation — kill inline text-align:justify
+ * Content editors often paste from Word with justified paragraphs; that creates
+ * "rivers of white space" that harm dyslexic readers.
+ * -------------------------------------------------------------------------- */
+
+*[style*="text-align:justify"],
+*[style*="text-align: justify"] {
+  text-align: left !important;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 1.4.3 Contrast (Minimum) — footer link colour
+ *
+ * `.site-footer a` was previously `color: #d4d4d4`, which sits at roughly
+ * 2.9:1 against the theme's tertiary-blue footer background. We render footer
+ * links in pure white with an underline AND lay a subtle dark band behind the
+ * link list to guarantee ≥ 4.5:1 regardless of which footer-bg colour a
+ * deployment picks in theme settings.
+ * -------------------------------------------------------------------------- */
+
+.site-footer a,
+.site-footer .footer a,
+.site-footer .container-footer-copyright a {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible,
+.site-footer .footer a:hover,
+.site-footer .footer a:focus-visible {
+  color: #ffffff;
+  text-decoration-thickness: 2px;
+}
+
+/* Contrast-lifting scrim on the inner footer container. This is a purely
+   visual layer that darkens whatever the theme's --bb-footer-bg happens to be
+   by ~35% so white text always clears the 4.5:1 threshold. */
+.site-footer .footer {
+  position: relative;
+}
+
+.site-footer .footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.site-footer .footer > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 3.3.1 Error Identification — form inline errors
+ * Bootstrap 5's `.invalid-feedback` is hidden by default until the sibling
+ * input has `.is-invalid`. Drupal doesn't apply that class server-side, so
+ * we ensure the error message always shows when the theme renders it via
+ * templates/form/form-element.html.twig. `role="alert"` on the same element
+ * carries the announcement to AT.
+ * -------------------------------------------------------------------------- */
+
+.form-item__error {
+  display: block;
+  color: #ab2328;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  margin-top: 0.25rem;
+}
+
+.has-error > label,
+.form-item.has-error > label {
+  color: #ab2328;
+}
+
+.has-error input:not([type="checkbox"]):not([type="radio"]),
+.has-error select,
+.has-error textarea {
+  border-color: #ab2328;
+  border-width: 2px;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 3.3.2 Labels — required marker
+ * The theme already renders `form-required` via CSS `::after`; make sure that
+ * pseudo-element carries the correct semantics (decoration only).
+ * -------------------------------------------------------------------------- */
+
+.form-required::after {
+  speak: never;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 2.2.2 Pause, Stop, Hide — carousel pause/play control
+ * See templates/views/views-bootstrap-carousel.html.twig for the markup.
+ * -------------------------------------------------------------------------- */
+
+.carousel-pause-toggle {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background-color: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.carousel-pause-toggle:hover,
+.carousel-pause-toggle:focus-visible {
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-color: #fff;
+}
+
+.carousel-pause-toggle__icon {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='6' y='5' width='4' height='14'/><rect x='14' y='5' width='4' height='14'/></svg>") no-repeat center / contain;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='6' y='5' width='4' height='14'/><rect x='14' y='5' width='4' height='14'/></svg>") no-repeat center / contain;
+}
+
+.carousel-pause-toggle.is-paused .carousel-pause-toggle__icon {
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon points='7,5 19,12 7,19'/></svg>") no-repeat center / contain;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon points='7,5 19,12 7,19'/></svg>") no-repeat center / contain;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * Mobile nav — WCAG 1.4.10 Reflow support
+ * When the shared hamburger opens both collapse panels, cap them to the
+ * viewport height minus the header offset and let their contents scroll.
+ * -------------------------------------------------------------------------- */
+
+@media (max-width: 991.98px) {
+  #CollapsingNavbarTop.collapse.show,
+  #CollapsingNavbar.collapse.show,
+  #CollapsingNavbarTop.collapsing,
+  #CollapsingNavbar.collapsing {
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* Give the second panel a visual separator so users can tell it apart when
+     both are stacked open below the hamburger. */
+  #CollapsingNavbar.collapse.show {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+
+/* -----------------------------------------------------------------------------
+ * Tablist-adjacent item — cosmetic follow-up to the JS in custom.js that
+ * extracts non-tab children (e.g. a "Download" dropdown) out of a
+ * `role="tablist"` container. Keep the visual position/appearance aligned
+ * with the neighbouring tab bar.
+ * -------------------------------------------------------------------------- */
+
+.nav-tabs + .tablist-adjacent-item {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.25rem;
+  margin-top: -0.25rem;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 1.4.10 Reflow — no horizontal scroll below 320px CSS pixels
+ *
+ * Corresponds to a 1280px viewport at 400% zoom. Anything that could push the
+ * layout wider than the viewport gets neutralised here.
+ * -------------------------------------------------------------------------- */
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Never let media force horizontal overflow. */
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Data tables can legitimately be wider than the viewport (WCAG explicitly
+   permits horizontal scrolling on tables). Wrap them in a responsive scroller
+   at the utility level so authors don't have to remember to do it manually. */
+.field--type-string-long table,
+.text-formatted table,
+.content table,
+.node__content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 480px) {
+  /* Kill the `.nav-link { white-space: nowrap !important }` override for very
+     narrow viewports — otherwise multi-word menu items force horizontal scroll. */
+  .nav-link {
+    white-space: normal !important;
+  }
+
+  /* Carousel controls take up 5% each; on very narrow viewports that's less
+     than the icon size. Nudge them a bit wider and give the icons a tighter
+     size so they still fit. */
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 15%;
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* Footer stack: the site-footer-top uses flex row with a tall image; force
+     column stack at narrow widths. */
+  .site-footer-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem 0.75rem;
+  }
+
+  .site-footer-top img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Back-to-top button becomes obtrusive at 320px; shrink it a touch. */
+  .back-to-top {
+    right: 0.5rem;
+    bottom: 0.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+/* Break-words on very long single-word strings (URLs, filenames) so they don't
+   push the layout wider than the viewport at 320px. */
+.content,
+.field--type-string-long,
+.field--type-text-long,
+.text-formatted,
+main {
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+
+/* -----------------------------------------------------------------------------
+ * 1.3.1 — Content authored with ALL CAPS via text-transform
+ * ALL CAPS is significantly harder to read and can be misread by screen readers.
+ * We only override where authors used a *utility* to force capitals; deliberate
+ * design uses (e.g. a badge component) can opt in via .allow-uppercase.
+ * -------------------------------------------------------------------------- */
+
+.text-uppercase:not(.allow-uppercase),
+[style*="text-transform:uppercase"]:not(.allow-uppercase),
+[style*="text-transform: uppercase"]:not(.allow-uppercase) {
+  text-transform: none !important;
+}
