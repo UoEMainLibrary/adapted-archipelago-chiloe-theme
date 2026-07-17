@@ -10,7 +10,19 @@
  * @see template_preprocess_input()
  */
 #}
+{#
+ # WCAG 4.1.2 / 3.3.2: the header search input is rendered without a visible
+ # label; give it a stable aria-label so screen-reader users know its purpose.
+ # If a Views admin later configures a visible label, the aria-label is
+ # harmless (the visible label already provides the accessible name).
+ #}
 {% if attributes.name is defined and attributes.name == 'search_api_fulltext' %}
-  {%  set attributes = attributes.setAttribute('size', '100')  %}
+  {% set attributes = attributes.setAttribute('size', '100') %}
+  {% if not attributes['aria-label'] %}
+    {% set attributes = attributes.setAttribute('aria-label', 'Search the digital collections'|t) %}
+  {% endif %}
+  {% if not attributes['placeholder'] %}
+    {% set attributes = attributes.setAttribute('placeholder', 'Search…'|t) %}
+  {% endif %}
 {% endif %}
 <input{{ attributes.addClass("form-control").removeClass("form-text") }} />{{ children }}

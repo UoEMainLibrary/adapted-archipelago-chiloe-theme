@@ -7,6 +7,241 @@
 
   'use strict';
 
+  /**
+   * WCAG 2.2.2 Pause, Stop, Hide.
+   *
+   * Wires the pause/play toggle rendered by
+   * templates/views/views-bootstrap-carousel.html.twig into the Bootstrap 5
+   * Carousel API. Also honours prefers-reduced-motion by starting paused.
+   */
+  Drupal.behaviors.archipelago_subtheme_chiloe_carousel_pause = {
+    attach: function (context) {
+      const toggles = once('a11y-carousel-pause', '.carousel-pause-toggle', context);
+      toggles.forEach(function (toggle) {
+        const targetId = toggle.getAttribute('data-bs-target');
+        const carouselEl = targetId ? document.querySelector(targetId) : toggle.closest('.carousel');
+        if (!carouselEl || typeof bootstrap === 'undefined' || !bootstrap.Carousel) {
+          return;
+        }
+        const carousel = bootstrap.Carousel.getOrCreateInstance(carouselEl);
+        const label = toggle.querySelector('.carousel-pause-toggle__label');
+        const pausedLabel = Drupal.t('Play');
+        const playingLabel = Drupal.t('Pause');
+        const pausedAria = Drupal.t('Play carousel automatic sliding');
+        const playingAria = Drupal.t('Pause carousel automatic sliding');
+
+        function setState(paused) {
+          toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
+          toggle.setAttribute('aria-label', paused ? pausedAria : playingAria);
+          toggle.classList.toggle('is-paused', paused);
+          if (label) {
+            label.textContent = paused ? pausedLabel : playingLabel;
+          }
+        }
+
+        toggle.addEventListener('click', function () {
+          const paused = toggle.getAttribute('aria-pressed') === 'true';
+          if (paused) {
+            carousel.cycle();
+            setState(false);
+          } else {
+            carousel.pause();
+            setState(true);
+          }
+        });
+
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          carousel.pause();
+          setState(true);
+        }
+      });
+    }
+  };
+
+  /**
+   * Mobile nav coordination fix.
+   *
+   * The header exposes a single hamburger button that targets `.to-be-collapsed`
+   * which matches both `#CollapsingNavbarTop` and `#CollapsingNavbar`. Bootstrap
+   * 5's built-in collapse handling for a multi-target selector can leave the
+   * two panels out of sync (one open, one closed) when a user closes just one
+   * of them (e.g. via ESC or a dismiss button inside an offcanvas variant), and
+   * the toggler's aria-expanded state stops matching what's on screen.
+   *
+   * This behaviour:
+   *  - Intercepts clicks on the shared toggler and drives both Collapse
+   *    instances in lockstep.
+   *  - Keeps aria-expanded on the toggler in sync with the actual DOM state
+   *    by listening to Bootstrap's `shown.bs.collapse` / `hidden.bs.collapse`
+   *    events on either panel.
+   *  - Constrains the open menu to the viewport with an internal scrollbar so
+   *    it doesn't get cut off on short mobile screens (supports WCAG 1.4.10
+   *    Reflow).
+   *  - Moves focus into the newly opened panel and returns it to the toggler
+   *    on close, giving keyboard-only users a coherent tab loop.
+   */
+  Drupal.behaviors.archipelago_subtheme_chiloe_mobile_nav = {
+    attach: function (context) {
+      const togglers = once(
+        'a11y-mobile-nav',
+        '.navbar-toggler[data-bs-target=".to-be-collapsed"]',
+        context
+      );
+      togglers.forEach(function (toggler) {
+        if (typeof bootstrap === 'undefined' || !bootstrap.Collapse) {
+          return;
+        }
+        const panels = Array.from(document.querySelectorAll('.to-be-collapsed'));
+        if (panels.length === 0) {
+          return;
+        }
+
+        panels.forEach(function (panel) {
+          panel.setAttribute('data-bs-parent', '');
+          // Ensure aria attributes are set for AT users.
+          if (!panel.hasAttribute('role')) {
+            panel.setAttribute('role', 'region');
+          }
+          if (!panel.hasAttribute('aria-label') && panel.id) {
+            panel.setAttribute('aria-label', panel.id === 'CollapsingNavbarTop' ? Drupal.t('Site utilities') : Drupal.t('Main navigation'));
+          }
+          panel.addEventListener('shown.bs.collapse', function () {
+            toggler.setAttribute('aria-expanded', 'true');
+            toggler.classList.remove('collapsed');
+            const first = panel.querySelector('a, button, input, [tabindex]:not([tabindex="-1"])');
+            if (first) {
+              first.focus({preventScroll: true});
+            }
+          });
+          panel.addEventListener('hidden.bs.collapse', function () {
+            const anyOpen = panels.some(function (p) { return p.classList.contains('show'); });
+            if (!anyOpen) {
+              toggler.setAttribute('aria-expanded', 'false');
+              toggler.classList.add('collapsed');
+              // Return focus to toggler if it isn't currently focused elsewhere.
+              if (document.activeElement === document.body) {
+                toggler.focus({preventScroll: true});
+              }
+            }
+          });
+        });
+
+        // Intercept the click BEFORE Bootstrap's default handler by using
+        // capture phase so we can decide what to open/close ourselves.
+        toggler.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          const anyOpen = panels.some(function (p) { return p.classList.contains('show'); });
+          panels.forEach(function (panel) {
+            const inst = bootstrap.Collapse.getOrCreateInstance(panel, {toggle: false});
+            if (anyOpen) {
+              inst.hide();
+            } else {
+              inst.show();
+            }
+          });
+        }, true);
+
+        // ESC on any focused element inside an open panel closes both panels.
+        panels.forEach(function (panel) {
+          panel.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' || event.key === 'Esc') {
+              panels.forEach(function (p) {
+                const inst = bootstrap.Collapse.getOrCreateInstance(p, {toggle: false});
+                inst.hide();
+              });
+              toggler.focus({preventScroll: true});
+            }
+          });
+        });
+      });
+    }
+  };
+
+  /**
+   * WCAG 4.1.2 Name, Role, Value — hidden duplicate form controls.
+   *
+   * Drupal renders duplicate search-form inputs (once for desktop, once for
+   * mobile) and marks the second copies with `aria-hidden="true"` + Drupal's
+   * `.visually-hidden` class. That class only clips the element visually — it
+   * doesn't remove the input from the tab order, so keyboard users can Tab
+   * into a control that AT users can't see. Fix by marking any focusable
+   * descendant of an aria-hidden container as `tabindex="-1"` and applying
+   * `inert` on browsers that support it.
+   */
+  Drupal.behaviors.archipelago_subtheme_chiloe_hidden_focus_guard = {
+    attach: function (context) {
+      const hiddenContainers = once(
+        'a11y-hidden-focus-guard',
+        '[aria-hidden="true"]',
+        context
+      );
+      hiddenContainers.forEach(function (el) {
+        // If the element itself is a focusable form control, disable it.
+        if (el.matches('input, button, select, textarea, a[href], [tabindex]')) {
+          el.setAttribute('tabindex', '-1');
+        }
+        // Recurse into focusable descendants.
+        el.querySelectorAll('input, button, select, textarea, a[href], [tabindex]').forEach(function (child) {
+          child.setAttribute('tabindex', '-1');
+        });
+        // Modern browsers: `inert` removes the subtree from focus + AT.
+        if ('inert' in HTMLElement.prototype && !el.hasAttribute('inert')) {
+          el.inert = true;
+        }
+      });
+    }
+  };
+
+  /**
+   * WCAG 1.3.1 / 4.1.2 — Bootstrap tablist semantics fix.
+   *
+   * ADO detail pages render tab navigation as `<ul role="tablist">` with
+   * `<li class="nav-item">` children (a Bootstrap 5 idiom). axe flags this as
+   * both `aria-required-children` (tablist needs direct role="tab" children)
+   * and `listitem` (li not inside a role="list" parent, because tablist
+   * overrides the implicit list role). The right ARIA remedy is
+   * `role="presentation"` on the intermediate <li>s so they're treated as
+   * transparent wrappers.
+   *
+   * These tab lists are rendered by Metadata Display Twig entities stored in
+   * the database, so fixing at the theme JS layer here is the cheapest place
+   * to close the loop.
+   */
+  Drupal.behaviors.archipelago_subtheme_chiloe_tablist_a11y = {
+    attach: function (context) {
+      const tablists = once('a11y-tablist', '[role="tablist"]', context);
+      tablists.forEach(function (tablist) {
+        // Make <li> intermediaries transparent for aria-required-children.
+        tablist.querySelectorAll(':scope > li').forEach(function (li) {
+          if (!li.hasAttribute('role')) {
+            li.setAttribute('role', 'presentation');
+          }
+        });
+        // Move any <li> whose only descendant with an interactive role is NOT
+        // `role="tab"` out of the tablist. This addresses the ADO detail page
+        // pattern where a "Download" dropdown was rendered inside the same
+        // <ul role="tablist"> as the actual tabs, breaking
+        // `aria-required-children`. The non-tab child (e.g. a Bootstrap
+        // dropdown) is unwrapped and re-parented as a sibling <div> so it
+        // still renders in the same place visually.
+        Array.from(tablist.children).forEach(function (child) {
+          const hasTab = child.querySelector('[role="tab"]');
+          if (!hasTab) {
+            // Convert to a plain sibling wrapper outside the tablist.
+            const wrapper = document.createElement('div');
+            wrapper.className = child.className + ' tablist-adjacent-item';
+            while (child.firstChild) {
+              wrapper.appendChild(child.firstChild);
+            }
+            tablist.insertAdjacentElement('afterend', wrapper);
+            child.remove();
+          }
+        });
+      });
+    }
+  };
+
   Drupal.behaviors.archipelago_subtheme_chiloe = {
     attach: function (context, settings) {
       function SetFixedPositioning(ele) {

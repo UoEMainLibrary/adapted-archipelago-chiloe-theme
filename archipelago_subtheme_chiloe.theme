@@ -286,6 +286,15 @@ function archipelago_subtheme_chiloe_preprocess_page(&$variables) {
 
 
 function archipelago_subtheme_chiloe_preprocess_html(&$variables) {
+  // WCAG 3.1.1 Language of Page — force en-GB (British English) so screen
+  // readers pronounce the site in the correct locale. Drupal core only sets
+  // the base lang code (e.g. "en") from the site's default language config;
+  // this overrides that with the region-specific tag the accessibility
+  // statement declares.
+  if (isset($variables['html_attributes']) && is_object($variables['html_attributes']) && method_exists($variables['html_attributes'], 'setAttribute')) {
+    $variables['html_attributes']->setAttribute('lang', 'en-GB');
+  }
+
   // Color settings
   bootstrap_barrio_preprocess_html($variables);
 
