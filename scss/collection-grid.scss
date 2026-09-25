@@ -1,3 +1,11 @@
+// =============================================================
+// Collection grid (homepage) + Collection page banner
+// Scoped so nothing else on the site is affected
+// =============================================================
+
+// -------------------------------------------------------------
+// HOMEPAGE GRID — .view-collection-grid
+// -------------------------------------------------------------
 .view-collection-grid {
 
   // ---- Whole card is square ----
@@ -9,7 +17,7 @@
     height: 100%;
   }
 
-  // ---- Title (white, primary bg, underlined, square) ----
+  // ---- Title: white on primary, underlined, square corners ----
   .field--name-node-title {
     flex: 0 0 auto;
     background-color: var(--bs-primary, #{$primary-shade});
@@ -17,27 +25,27 @@
     padding: 0.5rem 0.75rem;
     text-align: center;
     margin: 0 !important;
-    min-height: 3em;               // optional: equalises 1 vs 2 lines
+    min-height: 3em;
     display: flex;
     align-items: center;
     justify-content: center;
 
     h2 {
-      margin-top: 0;
+      margin: 0;
     }
 
     a {
       color: #fff;
-      text-decoration: underline;  // accessibility
+      text-decoration: underline;
     }
   }
 
-  // ---- Image fills remaining square space ----
+  // ---- Image: fills remaining square space, gray placeholder ----
   .field--name-field-descriptive-metadata {
-    margin: 0 !important;
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
+    margin: 0 !important;
     background-color: #e0e3e3;
 
     a {
@@ -50,10 +58,10 @@
       width: 100% !important;
       height: 100% !important;
       object-fit: cover !important;
+      object-position: top center !important;
     }
   }
 
-  // ---- Square corners (override .rounded utility) ----
   .node--type-digital-object-collection,
   .field--name-node-title,
   .field--name-field-descriptive-metadata img.image-iiif {
@@ -62,5 +70,35 @@
 
   .col-6 {
     margin-bottom: 1.5rem;
+  }
+}
+
+
+// -------------------------------------------------------------
+// COLLECTION PAGE BANNER — .node--view-mode-collection-listing
+// -------------------------------------------------------------
+.node--view-mode-collection-listing {
+
+  .field--name-field-descriptive-metadata {
+
+    a {
+      display: block;
+      width: 100%;
+    }
+
+    div[style] {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: 300px !important;
+      margin: 0 !important;
+    }
+
+    img.image-iiif {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: top center !important;
+      border-radius: 0 !important;
+    }
   }
 }
