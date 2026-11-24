@@ -33,7 +33,6 @@ input[type=button], input[type=submit] {
     line-height: 1.5rem;
     padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
     height: 100%;
-    text-transform: uppercase;
     font-weight: 600;
     transition: border .25s, background-color 0.5s, color .25s;
     &:hover {
@@ -46,7 +45,6 @@ input[type=button], input[type=submit] {
     border-radius: 0;
     padding: 0.55rem 0.75rem;
     height: 100%;
-    text-transform: uppercase;
     font-weight: 600;
     transition: border .25s, background-color 0.5s, color .25s;
     &:hover {

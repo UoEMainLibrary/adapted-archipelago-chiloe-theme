@@ -1,0 +1,127 @@
+// =============================================================
+// Collection grid (homepage) + Collection page banner
+// =============================================================
+
+// -------------------------------------------------------------
+// HOMEPAGE GRID — .view-collection-grid
+// -------------------------------------------------------------
+.view-collection-grid {
+
+  .node--type-digital-object-collection {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .field--name-node-title {
+    flex: 0 0 auto;
+    background-color: var(--bs-primary, #{$primary-shade});
+    color: #fff;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    margin: 0 !important;
+    min-height: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    h2 { margin: 0; }
+
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+
+  // ---- Image area: fills remaining flex space ----
+  .field--name-field-descriptive-metadata {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;       // establishes the box every child fills
+    overflow: hidden;
+    margin: 0 !important;
+    background-color: #e0e3e3;
+
+    a {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    div[style] {
+      position: absolute !important;
+      inset: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      max-width: none !important;
+      max-height: none !important;
+      margin: 0 !important;
+    }
+
+    img.image-iiif {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      max-height: none !important;
+      margin: 0 !important;
+      object-fit: cover !important;
+      object-position: top center !important;
+    }
+  }
+
+  .node--type-digital-object-collection,
+  .field--name-node-title,
+  .field--name-field-descriptive-metadata img.image-iiif {
+    border-radius: 0 !important;
+  }
+
+  .col-6 {
+    margin-bottom: 1.5rem;
+  }
+}
+
+
+// -------------------------------------------------------------
+// COLLECTION PAGE BANNER — .node--view-mode-collection-listing
+// -------------------------------------------------------------
+.node--view-mode-collection-listing {
+
+  .field--name-field-descriptive-metadata {
+    position: relative;
+    height: 400px;             // crop window height, as requested
+    overflow: hidden;
+
+    a {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    div[style] {
+      position: absolute !important;
+      inset: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      max-width: none !important;
+      max-height: none !important;
+      margin: 0 !important;
+    }
+
+    img.image-iiif {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      max-height: none !important;
+      margin: 0 !important;
+      object-fit: cover !important;
+      object-position: center -100px !important;  // shows image from 100px down
+      border-radius: 0 !important;
+    }
+  }
+}

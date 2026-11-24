@@ -54,3 +54,9 @@ This software is a [Metropolitan New York Library Council](https://metro.org) Op
 ## License
 
 [GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
+
+
+
+## Deployment
+Test branch being created to run onto test digital collections using the relevant drush command above.
+

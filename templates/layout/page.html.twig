@@ -97,13 +97,17 @@
            {{ page.top_header }}
            {%  if navbar_collapse_btn_data == "offcanvas" %}
                <div class="d-flex navbar-toggler-wrapper flex-column position-absolute top-0 end-0 me-2 mt-2">
-              <button class="navbar-toggler collapsed ml-auto" type="button" data-bs-toggle="{{ navbar_collapse_btn_data }}" data-bs-target="#CollapsingNavbarTop" aria-controls="CollapsingNavbarTop" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+              <button class="navbar-toggler collapsed ml-auto" type="button" data-bs-toggle="{{ navbar_collapse_btn_data }}" data-bs-target="#CollapsingNavbarTop" aria-controls="CollapsingNavbarTop" aria-expanded="false" aria-label="{{ 'Open site menu'|t }}"><span class="navbar-toggler-icon" aria-hidden="true"></span></button>
                    {% if header_form_exists %}
-                   <button class="navbar-toggler collapsed ml-auto" type="button" data-bs-toggle="{{ navbar_collapse_btn_data }}" data-bs-target="#CollapsingNavbar" aria-controls="CollapsingNavbar" aria-expanded="false" aria-label="Toggle Search"><span class="navbar-toggler-icon-search"></span></button>
+                   <button class="navbar-toggler collapsed ml-auto" type="button" data-bs-toggle="{{ navbar_collapse_btn_data }}" data-bs-target="#CollapsingNavbar" aria-controls="CollapsingNavbar" aria-expanded="false" aria-label="{{ 'Open site search'|t }}"><span class="navbar-toggler-icon-search" aria-hidden="true"></span></button>
                    {%  endif %}{# only add the toggler for search/forms if we have actually data #}
                </div>
            {% else %}
-              <button class="navbar-toggler collapsed ml-auto" type="button" data-bs-toggle="{{ navbar_collapse_btn_data }}" data-bs-target=".to-be-collapsed" aria-controls="CollapsingNavbarTop CollapsingNavbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+              {# Shared hamburger — targets both `.to-be-collapsed` panels. The
+                 archipelago_subtheme_chiloe_mobile_nav JS behaviour in
+                 js/custom.js coordinates open/close so aria-expanded stays in
+                 sync with the actual DOM state. See WCAG 4.1.2, 1.4.10, 2.1.1. #}
+              <button class="navbar-toggler collapsed ml-auto" type="button" data-bs-toggle="{{ navbar_collapse_btn_data }}" data-bs-target=".to-be-collapsed" aria-controls="CollapsingNavbarTop CollapsingNavbar" aria-expanded="false" aria-label="{{ 'Toggle site menu and search'|t }}"><span class="navbar-toggler-icon" aria-hidden="true"></span></button>
            {% endif %}
                 <div class="{{ navbar_collapse_class }} to-be-collapsed" id="CollapsingNavbarTop">
                {% if navbar_offcanvas %}
@@ -293,9 +297,9 @@
        </div>
       {% endblock %}
     </div>
-    <a href="#" class="back-to-top" rel="nofollow">
-      <i class="fas fa-chevron-up"></i>
-      <span class="sr-only">Back to top</span>
+    <a href="#page-wrapper" class="back-to-top no-new-tab-indicator" rel="nofollow" aria-label="{{ 'Back to top of page'|t }}">
+      <i class="fas fa-chevron-up" aria-hidden="true"></i>
+      <span class="visually-hidden">{{ 'Back to top'|t }}</span>
     </a>
     {% if page.featured_bottom_first or page.featured_bottom_second or page.featured_bottom_third %}
       <div class="featured-bottom layout-main-wrapper pb-3 mb-2 clearfix">

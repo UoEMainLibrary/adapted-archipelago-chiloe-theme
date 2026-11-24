@@ -2,12 +2,14 @@
   {% block footer %}
     <div class="gx-0">
       <div class="site-footer__top clearfix">
-      {% if page.footer_first or page.footer_second or page.footer_third or page.footer_fourth %}
-          {{ page.footer_first }}
-          {% include '@archipelago_subtheme_chiloe/templates/includes/custom-footer.html.twig' %}
-          {{ page.footer_third }}
-          {{ page.footer_fourth }}
-      {% endif %}
+        <div class="{{ container }} gx-0">
+        {% if page.footer_first or page.footer_second or page.footer_third or page.footer_fourth %}
+            {{ page.footer_first }}
+            {% include '@archipelago_subtheme_chiloe/templates/includes/custom-footer.html.twig' %}
+            {{ page.footer_third }}
+            {{ page.footer_fourth }}
+        {% endif %}
+        </div>
       </div>
     </div>
     <div class="site-footer__bottom">

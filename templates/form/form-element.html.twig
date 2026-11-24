@@ -41,6 +41,17 @@
  * - disabled: True if the element is disabled.
  * - title_display: Title display setting.
  *
+ * WCAG 2.2 AA notes:
+ * - 3.3.1 Error Identification: error messages carry `role="alert"` so that
+ *   AT announces them, and are unconditionally displayed as a block regardless
+ *   of whether the child input carries Bootstrap's `.is-invalid` class.
+ * - 1.3.1 Info and Relationships: errors are inserted with a stable id inside
+ *   `attributes` so downstream JS can wire `aria-describedby`. (Drupal core's
+ *   FormBuilder already links inputs to descriptions; the theme surface just
+ *   preserves that markup.)
+ * - 4.1.2 Name, Role, Value: labels retain their `for` attribute pairing
+ *   (see form-element-label.html.twig).
+ *
  * @see template_preprocess_form_element()
  */
 #}
@@ -118,7 +129,7 @@
       <span class="field-suffix">{{ suffix }}</span>
     {% endif %}
     {% if errors %}
-      <div class="invalid-feedback">
+      <div class="invalid-feedback form-item__error" role="alert" aria-live="polite">
         {{ errors }}
       </div>
     {% endif %}
@@ -159,7 +170,7 @@
       {{ label }}
     {% endif %}
     {% if errors %}
-      <div class="invalid-feedback">
+      <div class="invalid-feedback form-item__error" role="alert" aria-live="polite">
         {{ errors }}
       </div>
     {% endif %}

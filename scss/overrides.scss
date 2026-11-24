@@ -155,3 +155,21 @@ archipelago-subtheme #drupal-off-canvas-wrapper details {
   background-color: unset;
 }
 
+//lucy overrides varous things
+// Stack the top-header-form menu into one column on small screens
+@media (max-width: 767.98px) {
+  .region-top-header-form {
+    flex-wrap: wrap !important;
+    flex-direction: column;
+  }
+
+  .region-top-header-form .nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .region-top-header-form .nav-item {
+    width: 100%;
+  }
+}
+
